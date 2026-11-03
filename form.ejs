@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= judulHalaman %></title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="container narrow">
+    <h1><%= judulHalaman %></h1>
+
+    <% if (errors.length) { %>
+      <div class="alert error">
+        <ul>
+          <% errors.forEach(function (e) { %><li><%= e %></li><% }); %>
+        </ul>
+      </div>
+    <% } %>
+
+    <form method="POST" action="<%= aksi %>" class="form">
+      <label for="judul">Judul</label>
+      <input type="text" id="judul" name="judul" value="<%= buku.judul %>" required>
+
+      <label for="penulis">Penulis</label>
+      <input type="text" id="penulis" name="penulis" value="<%= buku.penulis %>" required>
+
+      <label for="tahun">Tahun Terbit</label>
+      <input type="number" id="tahun" name="tahun" value="<%= buku.tahun %>" min="1000" max="2100" required>
+
+      <label for="kategori_id">Kategori</label>
+      <select id="kategori_id" name="kategori_id" required>
+        <option value="">-- Pilih kategori --</option>
+        <% kategori.forEach(function (k) { %>
+          <option value="<%= k.id %>" <%= Number(buku.kategori_id) === k.id ? 'selected' : '' %>><%= k.nama %></option>
+        <% }); %>
+      </select>
+
+      <div class="actions">
+        <button type="submit" class="btn primary">Simpan</button>
+        <a href="/buku" class="btn">Batal</a>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

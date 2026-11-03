@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katalog Buku Perpustakaan</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Katalog Buku Perpustakaan</h1>
+
+    <% if (pesan) { %>
+      <div class="alert success"><%= pesan %></div>
+    <% } %>
+
+    <div class="toolbar">
+      <form method="GET" action="/buku" class="search">
+        <input type="text" name="q" value="<%= q %>" placeholder="Cari judul atau penulis...">
+        <button type="submit">Cari</button>
+        <% if (q) { %><a href="/buku" class="link">Reset</a><% } %>
+      </form>
+      <a href="/buku/tambah" class="btn primary">+ Tambah Buku</a>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Judul</th>
+          <th>Penulis</th>
+          <th>Tahun</th>
+          <th>Kategori</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (buku.length === 0) { %>
+          <tr><td colspan="6" class="empty">Belum ada data.</td></tr>
+        <% } %>
+        <% buku.forEach(function (b, i) { %>
+          <tr>
+            <td><%= (halaman - 1) * 5 + i + 1 %></td>
+            <td><%= b.judul %></td>
+            <td><%= b.penulis %></td>
+            <td><%= b.tahun %></td>
+            <td><%= b.kategori %></td>
+            <td class="aksi">
+              <a href="/buku/<%= b.id %>/edit" class="btn">Edit</a>
+              <form method="POST" action="/buku/<%= b.id %>/hapus"
+                    onsubmit="return confirm('Hapus buku ini?');">
+                <button type="submit" class="btn danger">Hapus</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <span>Total <%= total %> data &middot; Halaman <%= halaman %> dari <%= totalHalaman %></span>
+      <div>
+        <% if (halaman > 1) { %>
+          <a class="btn" href="/buku?page=<%= halaman - 1 %>&q=<%= encodeURIComponent(q) %>">&laquo; Sebelumnya</a>
+        <% } %>
+        <% if (halaman < totalHalaman) { %>
+          <a class="btn" href="/buku?page=<%= halaman + 1 %>&q=<%= encodeURIComponent(q) %>">Berikutnya &raquo;</a>
+        <% } %>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
